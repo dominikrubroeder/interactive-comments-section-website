@@ -1,8 +1,8 @@
 const currentUser = {
   currentUser: {
     image: {
-      png: './images/avatars/image-juliusomo.png',
-      webp: './images/avatars/image-juliusomo.webp',
+      png: '/images/avatars/image-juliusomo.png',
+      webp: '/images/avatars/image-juliusomo.webp',
     },
     username: 'juliusomo',
   },
@@ -17,7 +17,7 @@ export interface IComment {
   replies: IReply[];
 }
 
-interface IReply {
+export interface IReply {
   id: number;
   content: string;
   createdAt: string;
@@ -35,8 +35,8 @@ export const commentList: IComment[] = [
     score: 12,
     user: {
       image: {
-        png: './images/avatars/image-amyrobson.png',
-        webp: './images/avatars/image-amyrobson.webp',
+        png: '/images/avatars/image-amyrobson.png',
+        webp: '/images/avatars/image-amyrobson.webp',
       },
       username: 'amyrobson',
     },
@@ -50,8 +50,8 @@ export const commentList: IComment[] = [
     score: 5,
     user: {
       image: {
-        png: './images/avatars/image-maxblagun.png',
-        webp: './images/avatars/image-maxblagun.webp',
+        png: '/images/avatars/image-maxblagun.png',
+        webp: '/images/avatars/image-maxblagun.webp',
       },
       username: 'maxblagun',
     },
@@ -65,8 +65,8 @@ export const commentList: IComment[] = [
         replyingTo: 'maxblagun',
         user: {
           image: {
-            png: './images/avatars/image-ramsesmiron.png',
-            webp: './images/avatars/image-ramsesmiron.webp',
+            png: '/images/avatars/image-ramsesmiron.png',
+            webp: '/images/avatars/image-ramsesmiron.webp',
           },
           username: 'ramsesmiron',
         },
@@ -80,8 +80,8 @@ export const commentList: IComment[] = [
         replyingTo: 'ramsesmiron',
         user: {
           image: {
-            png: './images/avatars/image-juliusomo.png',
-            webp: './images/avatars/image-juliusomo.webp',
+            png: '/images/avatars/image-juliusomo.png',
+            webp: '/images/avatars/image-juliusomo.webp',
           },
           username: 'juliusomo',
         },

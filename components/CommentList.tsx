@@ -4,10 +4,10 @@ import Comment from './Comment';
 
 const CommentList: React.FC = () => {
   return (
-    <ul>
+    <ul className="grid gap-4">
       {commentList.map((comment) => (
         <li key={comment.id}>
-          <Comment />
+          <Comment {...comment} />
         </li>
       ))}
     </ul>
