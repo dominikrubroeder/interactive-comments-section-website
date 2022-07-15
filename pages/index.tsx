@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Comment from '../components/Comment';
+import CommentList from '../components/CommentList';
 
 const Home: NextPage = () => {
   return (
@@ -10,8 +12,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Hello, world</h1>
+      <main className="max-w-screen-md m-auto">
+        <CommentList />
       </main>
     </div>
   );
