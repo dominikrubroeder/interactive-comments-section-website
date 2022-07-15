@@ -1,8 +1,8 @@
 import React from 'react';
 import Comment from './Comment';
-import { IReply } from '../data/data';
+import { IComment } from '../data/data';
 
-const Reply: React.FC<IReply> = (props) => {
+const Reply: React.FC<IComment> = (props) => {
   return <Comment {...props} replies={[]} />;
 };
 

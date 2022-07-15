@@ -10,12 +10,15 @@ const Comment: React.FC<IComment> = ({
   score,
   user,
   replies,
+  replyingTo,
 }) => {
+  const hasReplies = replies && replies.length > 0;
+
   return (
     <>
       <div
         className={`flex items-start gap-4 p-4 rounded-lg bg-white ${
-          replies.length > 0 ? 'mb-4' : ''
+          hasReplies ? 'mb-4' : ''
         }`}
       >
         <div className="flex flex-col gap-0 text-center shrink-0 bg-app-neutral-gray-light rounded-lg px-2">
@@ -33,8 +36,8 @@ const Comment: React.FC<IComment> = ({
             <div className="flex items-center gap-4">
               <Image
                 src={user.image.png}
-                width="2rem"
-                height="2rem"
+                width={32}
+                height={32}
                 alt={`${user.username} avatar`}
                 className="rounded-full"
               />
@@ -48,14 +51,18 @@ const Comment: React.FC<IComment> = ({
           </header>
 
           <p className="text-app-neutral-blue-grayish">
-            {replies.length > 0 && <span>Answered from</span>}
+            {replyingTo && (
+              <span className="text-app-primary-blue-moderate font-bold">
+                @{replyingTo}&nbsp;
+              </span>
+            )}
             {content}
           </p>
         </div>
       </div>
 
-      {replies.length > 0 && (
-        <ul className="grid gap-4 pl-8">
+      {hasReplies && (
+        <ul className="grid gap-4 pl-8 ml-8 border-l-2">
           {replies.map((reply) => (
             <li key={reply.id}>
               <Reply {...reply} />
