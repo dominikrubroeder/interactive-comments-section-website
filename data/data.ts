@@ -1,11 +1,9 @@
-const currentUser = {
-  currentUser: {
-    image: {
-      png: '/images/avatars/image-juliusomo.png',
-      webp: '/images/avatars/image-juliusomo.webp',
-    },
-    username: 'juliusomo',
+export const currentUser = {
+  image: {
+    png: '/images/avatars/image-juliusomo.png',
+    webp: '/images/avatars/image-juliusomo.webp',
   },
+  username: 'juliusomo',
 };
 
 export interface IComment {

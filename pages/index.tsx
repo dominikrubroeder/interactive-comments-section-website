@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import AddCommentForm from '../components/AddCommentForm';
 import Comment from '../components/Comment';
 import CommentList from '../components/CommentList';
 
@@ -13,7 +14,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="max-w-screen-md m-auto">
-        <CommentList />
+        <div className="grid gap-8">
+          <CommentList />
+          <AddCommentForm />
+        </div>
       </main>
     </div>
   );
