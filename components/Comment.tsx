@@ -1,6 +1,8 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { IComment } from '../data/data';
+import AddCommentForm from './AddCommentForm';
+import IconReply from './icons/IconReply';
 import Reply from './Reply';
 
 const Comment: React.FC<IComment> = ({
@@ -12,6 +14,7 @@ const Comment: React.FC<IComment> = ({
   replies,
   replyingTo,
 }) => {
+  const [showReplyForm, setShowReplyForm] = useState(false);
   const hasReplies = replies && replies.length > 0;
 
   return (
@@ -45,8 +48,13 @@ const Comment: React.FC<IComment> = ({
               <p>{createdAt}</p>
             </div>
 
-            <button className="text-app-primary-blue-moderate">
-              icon Reply
+            <button
+              className="flex items-center gap-2 text-app-primary-blue-moderate"
+              onClick={() =>
+                setShowReplyForm((previousState) => !previousState)
+              }
+            >
+              <IconReply /> Reply
             </button>
           </header>
 
@@ -70,6 +78,8 @@ const Comment: React.FC<IComment> = ({
           ))}
         </ul>
       )}
+
+      {showReplyForm && <AddCommentForm />}
     </>
   );
 };

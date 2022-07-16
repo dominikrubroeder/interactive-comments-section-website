@@ -14,10 +14,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="max-w-screen-md m-auto">
-        <div className="grid gap-8">
-          <CommentList />
-          <AddCommentForm />
-        </div>
+        <CommentList />
       </main>
     </div>
   );
