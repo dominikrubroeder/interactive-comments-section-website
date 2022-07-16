@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { IComment } from '../data/data';
+import { currentUser, IComment } from '../data/data';
 import AddCommentForm from './AddCommentForm';
 import IconReply from './icons/IconReply';
 import Reply from './Reply';
@@ -79,7 +79,14 @@ const Comment: React.FC<IComment> = ({
         </ul>
       )}
 
-      {showReplyForm && <AddCommentForm />}
+      {showReplyForm && (
+        <AddCommentForm
+          replyingToId={id}
+          replyingTo={user.username}
+          currentUser={currentUser}
+          hideForm={() => setShowReplyForm(false)}
+        />
+      )}
     </>
   );
 };

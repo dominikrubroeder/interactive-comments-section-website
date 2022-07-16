@@ -1,4 +1,9 @@
-export const currentUser = {
+export interface IUser {
+  image: { png: string; webp: string };
+  username: string;
+}
+
+export const currentUser: IUser = {
   image: {
     png: '/images/avatars/image-juliusomo.png',
     webp: '/images/avatars/image-juliusomo.webp',
@@ -11,7 +16,7 @@ export interface IComment {
   content: string;
   createdAt: string;
   score: number;
-  user: { image: { png: string; webp: string }; username: string };
+  user: IUser;
   replies?: IComment[];
   replyingTo?: string;
 }
