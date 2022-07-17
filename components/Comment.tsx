@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { currentUser, IComment } from '../data/data';
 import AddCommentForm from './AddCommentForm';
 import IconReply from './icons/IconReply';
-import Reply from './Reply';
+import { CommentsContext } from '../store/commentsContext';
+import IconEdit from './icons/IconEdit';
+import IconDelete from './icons/IconDelete';
 
 const Comment: React.FC<IComment> = ({
   id,
@@ -14,8 +16,25 @@ const Comment: React.FC<IComment> = ({
   replies,
   replyingTo,
 }) => {
+  const commentsCtx = useContext(CommentsContext);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const hasReplies = replies && replies.length > 0;
+  const computeCreatedAt =
+    new Date(createdAt) && new Date(createdAt).toString() !== 'Invalid Date'
+      ? 'Some seconds ago...'
+      : createdAt;
+
+  const deepIterator = (target: any) => {
+    console.log(target);
+    console.log(typeof target);
+    if (typeof target === 'object') {
+      for (const key in target) {
+        deepIterator(target[key]);
+      }
+    } else {
+      console.log(target);
+    }
+  };
 
   return (
     <>
@@ -25,11 +44,17 @@ const Comment: React.FC<IComment> = ({
         }`}
       >
         <div className="flex flex-col gap-0 text-center shrink-0 bg-app-neutral-gray-light rounded-lg px-2">
-          <button className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate">
+          <button
+            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
+            onClick={() => commentsCtx?.increaseScore(id)}
+          >
             +
           </button>
           <p className="text-app-primary-blue-moderate">{score}</p>
-          <button className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate">
+          <button
+            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
+            onClick={() => commentsCtx?.decreaseScore(id)}
+          >
             -
           </button>
         </div>
@@ -45,20 +70,40 @@ const Comment: React.FC<IComment> = ({
                 className="rounded-full"
               />
               <h2>{user.username}</h2>
-              <p>{createdAt}</p>
+              <p>{computeCreatedAt}</p>
             </div>
 
-            <button
-              className="flex items-center gap-2 text-app-primary-blue-moderate"
-              onClick={() =>
-                setShowReplyForm((previousState) => !previousState)
-              }
-            >
-              <IconReply /> Reply
-            </button>
+            {user.username !== currentUser.username && (
+              <button
+                className="flex items-center gap-2 text-app-primary-blue-moderate"
+                onClick={() =>
+                  setShowReplyForm((previousState) => !previousState)
+                }
+              >
+                <IconReply /> Reply
+              </button>
+            )}
+
+            {user.username === currentUser.username && (
+              <div className="flex items-center gap-4">
+                <button
+                  className="flex items-center gap-2 text-app-primary-red-soft"
+                  onClick={() => commentsCtx?.deleteComment(id)}
+                >
+                  <IconDelete /> Delete
+                </button>
+
+                <button className="flex items-center gap-2 text-app-primary-blue-moderate">
+                  <IconEdit /> Edit
+                </button>
+              </div>
+            )}
           </header>
 
-          <p className="text-app-neutral-blue-grayish">
+          <p
+            className="text-app-neutral-blue-grayish"
+            onClick={() => deepIterator(replies)}
+          >
             {replyingTo && (
               <span className="text-app-primary-blue-moderate font-bold">
                 @{replyingTo}&nbsp;
@@ -73,7 +118,7 @@ const Comment: React.FC<IComment> = ({
         <ul className="grid gap-4 pl-8 ml-8 border-l-2">
           {replies.map((reply) => (
             <li key={reply.id}>
-              <Reply {...reply} />
+              <Comment {...reply} />
             </li>
           ))}
         </ul>

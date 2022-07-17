@@ -26,6 +26,8 @@ export type CommentContextType = {
   addComment: (newComment: IComment, replyingToId: number) => void;
   deleteComment: (id: number) => void;
   updateComment: (updatedComment: IComment) => void;
+  increaseScore: (id: number) => void;
+  decreaseScore: (id: number) => void;
 };
 
 export const commentList: IComment[] = [

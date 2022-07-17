@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { CommentContextType, IComment, commentList } from '../data/data';
 
 export const CommentsContext = createContext<CommentContextType | null>(null);
@@ -28,6 +28,28 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
     );
   };
 
+  const increaseScore = (commentId: number) => {
+    comments.map((comment: IComment) => {
+      if (comment.id === commentId) {
+        comment.score += 1;
+        setComments([...comments]);
+      }
+    });
+  };
+
+  const decreaseScore = (commentId: number) => {
+    comments.map((comment: IComment) => {
+      if (comment.id === commentId) {
+        comment.score -= 1;
+        setComments([...comments]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
   const updateCommentHandler = () => {};
 
   const context: CommentContextType = {
@@ -35,6 +57,8 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
     addComment: addCommentHandler,
     deleteComment: deleteCommentHandler,
     updateComment: updateCommentHandler,
+    increaseScore,
+    decreaseScore,
   };
 
   return (

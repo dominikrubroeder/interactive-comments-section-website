@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { IComment, IUser } from '../data/data';
 import { CommentsContext } from '../store/commentsContext';
 
@@ -33,11 +33,14 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
     };
     console.log(newComment);
 
-    // Add reply to comment
     commentCtx?.addComment(newComment, replyingToId);
 
     hideForm();
   };
+
+  useEffect(() => {
+    if (commentRef.current) commentRef.current.focus();
+  }, []);
 
   return (
     <div className="flex items-start gap-4 bg-white rounded-lg p-4 mt-4">
