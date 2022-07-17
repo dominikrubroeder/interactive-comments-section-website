@@ -74,7 +74,23 @@ export const commentList: IComment[] = [
           },
           username: 'ramsesmiron',
         },
-        replies: [],
+        replies: [
+          {
+            id: 5,
+            content: 'Third-level',
+            createdAt: '2 days ago',
+            score: 2,
+            replyingTo: 'ramsesmiron',
+            user: {
+              image: {
+                png: '/images/avatars/image-juliusomo.png',
+                webp: '/images/avatars/image-juliusomo.webp',
+              },
+              username: 'juliusomo',
+            },
+            replies: [],
+          },
+        ],
       },
       {
         id: 4,
