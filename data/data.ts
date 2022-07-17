@@ -17,9 +17,16 @@ export interface IComment {
   createdAt: string;
   score: number;
   user: IUser;
-  replies?: IComment[];
+  replies: IComment[];
   replyingTo?: string;
 }
+
+export type CommentContextType = {
+  comments: IComment[];
+  addComment: (newComment: IComment, replyingToId: number) => void;
+  deleteComment: (id: number) => void;
+  updateComment: (updatedComment: IComment) => void;
+};
 
 export const commentList: IComment[] = [
   {
@@ -65,6 +72,7 @@ export const commentList: IComment[] = [
           },
           username: 'ramsesmiron',
         },
+        replies: [],
       },
       {
         id: 4,
@@ -80,6 +88,7 @@ export const commentList: IComment[] = [
           },
           username: 'juliusomo',
         },
+        replies: [],
       },
     ],
   },

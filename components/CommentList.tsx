@@ -1,11 +1,13 @@
-import React from 'react';
-import { commentList } from '../data/data';
+import React, { useContext } from 'react';
 import Comment from './Comment';
+import { CommentsContext } from '../store/commentsContext';
 
 const CommentList: React.FC = () => {
+  const commentCtx = useContext(CommentsContext);
+
   return (
     <ul className="grid gap-4">
-      {commentList.map((comment) => (
+      {commentCtx?.comments.map((comment) => (
         <li key={comment.id}>
           <Comment {...comment} />
         </li>

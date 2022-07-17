@@ -1,6 +1,7 @@
 import Image from 'next/image';
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import { IComment, IUser } from '../data/data';
+import { CommentsContext } from '../store/commentsContext';
 
 interface AddCommentFormProps {
   replyingToId: number;
@@ -15,6 +16,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   currentUser,
   hideForm,
 }) => {
+  const commentCtx = useContext(CommentsContext);
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
 
   const onSubmitHandler = (e: React.FormEvent) => {
@@ -32,7 +34,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
     console.log(newComment);
 
     // Add reply to comment
-    // commentCtx.addComment(newComment, replyingToId)
+    commentCtx?.addComment(newComment, replyingToId);
 
     hideForm();
   };
