@@ -6,7 +6,7 @@ const CommentList: React.FC = () => {
   const commentCtx = useContext(CommentsContext);
 
   return (
-    <ul className="grid gap-4">
+    <ul className="grid gap-4 p-4">
       {commentCtx?.comments.map((comment) => (
         <li key={comment.id}>
           <Comment {...comment} />
