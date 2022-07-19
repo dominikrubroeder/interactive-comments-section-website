@@ -80,13 +80,43 @@ export const commentList: IComment[] = [
             content: 'Third-level',
             createdAt: '2 days ago',
             score: 2,
-            replyingTo: 'ramsesmiron',
+            replyingTo: 'maxblagun',
             user: {
               image: {
                 png: '/images/avatars/image-juliusomo.png',
                 webp: '/images/avatars/image-juliusomo.webp',
               },
               username: 'juliusomo',
+            },
+            replies: [
+              {
+                id: 6,
+                content: 'Fourth-level',
+                createdAt: '2 days ago',
+                score: 2,
+                replyingTo: 'juliusomo',
+                user: {
+                  image: {
+                    png: '/images/avatars/image-amyrobson.png',
+                    webp: '/images/avatars/image-amyrobson.webp',
+                  },
+                  username: 'amyrobson',
+                },
+                replies: [],
+              },
+            ],
+          },
+          {
+            id: 8,
+            content: 'tetingssss.',
+            createdAt: '1 month ago',
+            score: 12,
+            user: {
+              image: {
+                png: '/images/avatars/image-amyrobson.png',
+                webp: '/images/avatars/image-amyrobson.webp',
+              },
+              username: 'amyrobson',
             },
             replies: [],
           },

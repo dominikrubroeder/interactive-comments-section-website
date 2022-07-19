@@ -12,42 +12,36 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
 }) => {
   const [comments, setComments] = useState<IComment[]>(commentList);
 
-  const deepIterator = (target: IComment[], commentId: number) => {
-    if (typeof target === 'object') {
-      for (const key in target) {
-        if (target.find((comment) => comment.id === commentId)) {
-          const commentToReplyTo = target.find(
-            (comment) => comment.id === commentId
-          );
-          return commentToReplyTo;
-        } else {
-          target.forEach((comment: IComment) => {
-            deepIterator(comment.replies, commentId);
-          });
-        }
-      }
-    } else {
-      console.log('Not a valid object');
+  const deepIterator = (
+    target: IComment[],
+    commentId: number,
+    newComment: IComment
+  ): IComment | undefined => {
+    if (typeof target !== 'object') console.log('Not a valid object');
+
+    const commentToFind = target.find((comment) => comment.id === commentId);
+
+    if (!commentToFind) {
+      target.forEach((comment) =>
+        deepIterator(comment.replies, commentId, newComment)
+      );
+      return;
     }
+
+    console.log('count');
+    commentToFind.replies.push(newComment);
+    setComments([...comments]);
+    return commentToFind;
   };
 
   const addCommentHandler = (newComment: IComment, replyingToId: number) => {
-    // Adding a reply
-    // comments.map((comment: IComment) => {
-    //   if (comment.id === replyingToId) {
-    //     comment.replies = [...comment.replies, newComment];
-    //     setComments([...comments]);
-    //   }
-    // });
-
-    const commentToReplyTo = deepIterator(comments, replyingToId);
-    console.log(commentToReplyTo);
+    const test = deepIterator(comments, replyingToId, newComment);
   };
 
   const deleteCommentHandler = (commentId: number) => {
-    setComments((previousState) =>
-      previousState.filter((comment) => comment.id !== commentId)
-    );
+    // setComments((previousState) =>
+    //   previousState.filter((comment) => comment.id !== commentId)
+    // );
   };
 
   const increaseScore = (commentId: number) => {

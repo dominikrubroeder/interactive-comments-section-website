@@ -31,7 +31,6 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       replies: [],
       replyingTo: replyingTo,
     };
-    console.log(newComment);
 
     commentCtx?.addComment(newComment, replyingToId);
 
