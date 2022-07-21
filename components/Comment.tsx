@@ -150,6 +150,7 @@ const Comment: React.FC<IComment> = ({
 
       {showReplyForm && (
         <AddCommentForm
+          isReply={true}
           replyingToId={id}
           replyingTo={user.username}
           currentUser={currentUser}

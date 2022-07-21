@@ -12,7 +12,15 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
 }) => {
   const [comments, setComments] = useState<IComment[]>(commentList);
 
-  const addCommentHandler = (newComment: IComment, replyingToId: number) => {
+  const addCommentHandler = (
+    newComment: IComment,
+    replyingToId: number,
+    isReply: boolean
+  ) => {
+    if (!isReply) {
+      setComments((previousState) => previousState.concat(newComment));
+    }
+
     const deepIterator = (
       target: IComment[],
       commentId: number,

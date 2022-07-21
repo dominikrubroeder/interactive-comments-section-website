@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import AddCommentForm from '../components/AddCommentForm';
-import Comment from '../components/Comment';
 import CommentList from '../components/CommentList';
+import { currentUser } from '../data/data';
 
 const Home: NextPage = () => {
   return (
@@ -15,6 +15,13 @@ const Home: NextPage = () => {
 
       <main className="max-w-screen-md m-auto">
         <CommentList />
+        <AddCommentForm
+          isReply={false}
+          replyingTo="null"
+          replyingToId={-1}
+          hideForm={() => {}}
+          currentUser={currentUser}
+        />
       </main>
     </div>
   );
