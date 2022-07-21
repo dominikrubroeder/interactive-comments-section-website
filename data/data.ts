@@ -30,9 +30,13 @@ export type CommentContextType = {
   ) => void;
   deleteComment: (id: number) => void;
   updateComment: (updatedComment: IComment) => void;
-  increaseScore: (id: number) => void;
-  decreaseScore: (id: number) => void;
+  updateScore: (type: string, id: number) => void;
 };
+
+export enum ScoreActionType {
+  increase = 'INCREASE',
+  decrease = 'DECREASE',
+}
 
 export const commentList: IComment[] = [
   {

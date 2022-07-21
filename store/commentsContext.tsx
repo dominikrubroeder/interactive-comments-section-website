@@ -1,5 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
-import { CommentContextType, IComment, commentList } from '../data/data';
+import {
+  CommentContextType,
+  IComment,
+  commentList,
+  ScoreActionType,
+} from '../data/data';
 
 export const CommentsContext = createContext<CommentContextType | null>(null);
 
@@ -88,7 +93,7 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
     deepIterator(comments, updatedComment);
   };
 
-  const increaseScore = (commentId: number) => {
+  const updateScoreHandler = (type: string, commentId: number) => {
     const deepIterator = (target: IComment[], commentId: number) => {
       if (typeof target !== 'object') console.log('Not a valid object');
 
@@ -99,25 +104,9 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
         return;
       }
 
-      commentToFind.score += 1;
-      setComments([...comments]);
-    };
+      if (type === ScoreActionType.increase) commentToFind.score += 1;
+      if (type === ScoreActionType.decrease) commentToFind.score -= 1;
 
-    deepIterator(comments, commentId);
-  };
-
-  const decreaseScore = (commentId: number) => {
-    const deepIterator = (target: IComment[], commentId: number) => {
-      if (typeof target !== 'object') console.log('Not a valid object');
-
-      const commentToFind = target.find((comment) => comment.id === commentId);
-
-      if (!commentToFind) {
-        target.forEach((comment) => deepIterator(comment.replies, commentId));
-        return;
-      }
-
-      commentToFind.score -= 1;
       setComments([...comments]);
     };
 
@@ -133,8 +122,7 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
     addComment: addCommentHandler,
     deleteComment: deleteCommentHandler,
     updateComment: updateCommentHandler,
-    increaseScore,
-    decreaseScore,
+    updateScore: updateScoreHandler,
   };
 
   return (

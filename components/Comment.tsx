@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { currentUser, IComment } from '../data/data';
+import { currentUser, IComment, ScoreActionType } from '../data/data';
 import AddCommentForm from './AddCommentForm';
 import IconReply from './icons/IconReply';
 import { CommentsContext } from '../store/commentsContext';
@@ -29,6 +29,7 @@ const Comment: React.FC<IComment> = ({
   const contentTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const hasReplies = replies && replies.length > 0;
+
   const computeCreatedAt =
     new Date(createdAt) && new Date(createdAt).toString() !== 'Invalid Date'
       ? 'Some seconds ago...'
@@ -98,14 +99,18 @@ const Comment: React.FC<IComment> = ({
         <div className="flex items-center gap-0 text-center shrink-0 bg-app-neutral-gray-light rounded-lg px-2 self-start sm:flex-col">
           <button
             className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
-            onClick={() => commentsCtx?.increaseScore(id)}
+            onClick={() =>
+              commentsCtx?.updateScore(ScoreActionType.increase, id)
+            }
           >
             +
           </button>
           <p className="text-app-primary-blue-moderate">{score}</p>
           <button
             className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
-            onClick={() => commentsCtx?.decreaseScore(id)}
+            onClick={() =>
+              commentsCtx?.updateScore(ScoreActionType.decrease, id)
+            }
           >
             -
           </button>
@@ -129,7 +134,9 @@ const Comment: React.FC<IComment> = ({
                   </span>
                 )}
               </h2>
-              <p>{computeCreatedAt}</p>
+              <p className="text-app-neutral-blue-grayish">
+                {computeCreatedAt}
+              </p>
             </div>
 
             {user.username !== currentUser.username && (
