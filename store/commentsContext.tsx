@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import {
   CommentContextType,
   IComment,
@@ -17,6 +17,69 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
 }) => {
   const [comments, setComments] = useState<IComment[]>(commentList);
 
+  enum ContextActions {
+    add = 'ADD',
+    delete = 'DELETE',
+    update = 'UPDATE',
+    updateScore = 'UPDATE_SCORE',
+  }
+
+  function deepIterator(
+    target: IComment[],
+    action: string,
+    commentId: number,
+    newComment?: IComment,
+    updatedComment?: IComment,
+    updateScoreAction?: string
+  ) {
+    if (typeof target !== 'object') console.log('Not a valid object');
+
+    // Check if comment to find is in the root level of the current IComment[] array (target)
+    const indexOfCommentToFind = target.findIndex(
+      (comment) => comment.id === commentId
+    );
+
+    // If the comment to find was not found, reiterate the next level of the root comments (their 'replies' property)
+    if (indexOfCommentToFind === -1) {
+      target.forEach((comment) =>
+        deepIterator(
+          comment.replies,
+          action,
+          commentId,
+          newComment,
+          updatedComment,
+          updateScoreAction
+        )
+      );
+      return;
+    }
+
+    // Only if we have found the comment to find, do the desired action
+    switch (action) {
+      case ContextActions.add:
+        target[indexOfCommentToFind].replies.push(newComment!);
+        setComments([...comments]);
+        break;
+      case ContextActions.delete:
+        target.splice(indexOfCommentToFind, 1);
+        setComments([...comments]);
+        break;
+      case ContextActions.update:
+        target[indexOfCommentToFind] = updatedComment!;
+        setComments([...comments]);
+        break;
+      case ContextActions.updateScore:
+        if (updateScoreAction === ScoreActionType.increase)
+          target[indexOfCommentToFind].score += 1;
+        if (updateScoreAction === ScoreActionType.decrease)
+          target[indexOfCommentToFind].score -= 1;
+        setComments([...comments]);
+        break;
+      default:
+        console.log('No matching comments context action.');
+    }
+  }
+
   const addCommentHandler = (
     newComment: IComment,
     replyingToId: number,
@@ -26,96 +89,36 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
       setComments((previousState) => previousState.concat(newComment));
     }
 
-    const deepIterator = (
-      target: IComment[],
-      commentId: number,
-      newComment: IComment
-    ) => {
-      if (typeof target !== 'object') console.log('Not a valid object');
-
-      const commentToFind = target.find((comment) => comment.id === commentId);
-
-      if (!commentToFind) {
-        target.forEach((comment) =>
-          deepIterator(comment.replies, commentId, newComment)
-        );
-        return;
-      }
-
-      commentToFind.replies.push(newComment);
-      setComments([...comments]);
-    };
-
-    deepIterator(comments, replyingToId, newComment);
+    if (isReply)
+      deepIterator(comments, ContextActions.add, replyingToId, newComment);
   };
 
   const deleteCommentHandler = (commentId: number) => {
-    const deepIterator = (target: IComment[], commentId: number) => {
-      if (typeof target !== 'object') console.log('Not a valid object');
-
-      const indexOfCommentToDelete = target.findIndex(
-        (comment) => comment.id === commentId
-      );
-
-      if (indexOfCommentToDelete === -1) {
-        target.forEach((comment) => deepIterator(comment.replies, commentId));
-        return;
-      }
-
-      target.splice(indexOfCommentToDelete, 1);
-      setComments([...comments]);
-    };
-
-    deepIterator(comments, commentId);
+    deepIterator(comments, ContextActions.delete, commentId);
   };
 
   const updateCommentHandler = (updatedComment: IComment) => {
-    const deepIterator = (target: IComment[], updatedComment: IComment) => {
-      if (typeof target !== 'object') console.log('Not a valid object');
+    const { id } = updatedComment;
 
-      const { id } = updatedComment;
-
-      const indexOfCommentToUpdate = target.findIndex(
-        (comment) => comment.id === id
-      );
-
-      if (indexOfCommentToUpdate === -1) {
-        target.forEach((comment) =>
-          deepIterator(comment.replies, updatedComment)
-        );
-        return;
-      }
-
-      target[indexOfCommentToUpdate] = updatedComment;
-      setComments([...comments]);
-    };
-
-    deepIterator(comments, updatedComment);
+    deepIterator(
+      comments,
+      ContextActions.update,
+      id,
+      undefined,
+      updatedComment
+    );
   };
 
   const updateScoreHandler = (type: string, commentId: number) => {
-    const deepIterator = (target: IComment[], commentId: number) => {
-      if (typeof target !== 'object') console.log('Not a valid object');
-
-      const commentToFind = target.find((comment) => comment.id === commentId);
-
-      if (!commentToFind) {
-        target.forEach((comment) => deepIterator(comment.replies, commentId));
-        return;
-      }
-
-      if (type === ScoreActionType.increase) commentToFind.score += 1;
-      if (type === ScoreActionType.decrease) commentToFind.score -= 1;
-
-      setComments([...comments]);
-    };
-
-    deepIterator(comments, commentId);
+    deepIterator(
+      comments,
+      ContextActions.updateScore,
+      commentId,
+      undefined,
+      undefined,
+      type
+    );
   };
-
-  useEffect(() => {
-    console.log(comments);
-  }, [comments]);
 
   const context: CommentContextType = {
     comments,
