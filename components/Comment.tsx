@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { currentUser, IComment } from '../data/data';
 import AddCommentForm from './AddCommentForm';
 import IconReply from './icons/IconReply';
@@ -18,8 +18,14 @@ const Comment: React.FC<IComment> = ({
   replyingTo,
 }) => {
   const commentsCtx = useContext(CommentsContext);
+
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [initialContent, setInitialContent] = useState(content);
+
+  const contentTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
+
   const hasReplies = replies && replies.length > 0;
   const computeCreatedAt =
     new Date(createdAt) && new Date(createdAt).toString() !== 'Invalid Date'
@@ -30,6 +36,31 @@ const Comment: React.FC<IComment> = ({
     commentsCtx?.deleteComment(commentId);
     setShowDeleteModal(false);
   };
+
+  const updateHandler = () => {
+    const updatedComment: IComment = {
+      id,
+      content: contentTextAreaRef.current!.value,
+      createdAt,
+      score,
+      user,
+      replies,
+      replyingTo,
+    };
+
+    commentsCtx?.updateComment(updatedComment);
+    setIsEditMode(false);
+  };
+
+  const onChangeHandler = (e: any) => {
+    setInitialContent(e.target.value);
+  };
+
+  useEffect(() => {
+    if (contentTextAreaRef && isEditMode) {
+      contentTextAreaRef.current!.focus();
+    }
+  }, [isEditMode]);
 
   return (
     <>
@@ -120,21 +151,44 @@ const Comment: React.FC<IComment> = ({
                   <IconDelete /> Delete
                 </button>
 
-                <button className="flex items-center gap-2 text-app-primary-blue-moderate">
-                  <IconEdit /> Edit
+                <button
+                  className="flex items-center gap-2 text-app-primary-blue-moderate"
+                  onClick={() =>
+                    setIsEditMode((previousState) => !previousState)
+                  }
+                >
+                  <IconEdit /> {isEditMode ? 'Cancel' : 'Edit'}
                 </button>
               </div>
             )}
           </header>
 
-          <p className="text-app-neutral-blue-grayish">
-            {replyingTo && (
+          <div className="text-app-neutral-blue-grayish">
+            {replyingTo && !isEditMode && (
               <span className="text-app-primary-blue-moderate font-bold">
                 @{replyingTo}&nbsp;
               </span>
             )}
-            {content}
-          </p>
+            {!isEditMode && initialContent}
+
+            {isEditMode && (
+              <div className="grid gap-2">
+                <textarea
+                  className="textarea"
+                  onChange={(e) => onChangeHandler(e)}
+                  ref={contentTextAreaRef}
+                  defaultValue={initialContent}
+                />
+
+                <button
+                  className="bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase justify-self-end"
+                  onClick={updateHandler}
+                >
+                  Update
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

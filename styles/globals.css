@@ -40,3 +40,9 @@
     font-family: Rubik, 'sans-serif';
   }
 }
+
+@layer components {
+  .textarea {
+    @apply resize-none border rounded-lg px-4 py-2 min-h-[6rem];
+  }
+}

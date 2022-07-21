@@ -64,6 +64,30 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
     deepIterator(comments, commentId);
   };
 
+  const updateCommentHandler = (updatedComment: IComment) => {
+    const deepIterator = (target: IComment[], updatedComment: IComment) => {
+      if (typeof target !== 'object') console.log('Not a valid object');
+
+      const { id } = updatedComment;
+
+      const indexOfCommentToUpdate = target.findIndex(
+        (comment) => comment.id === id
+      );
+
+      if (indexOfCommentToUpdate === -1) {
+        target.forEach((comment) =>
+          deepIterator(comment.replies, updatedComment)
+        );
+        return;
+      }
+
+      target[indexOfCommentToUpdate] = updatedComment;
+      setComments([...comments]);
+    };
+
+    deepIterator(comments, updatedComment);
+  };
+
   const increaseScore = (commentId: number) => {
     const deepIterator = (target: IComment[], commentId: number) => {
       if (typeof target !== 'object') console.log('Not a valid object');
@@ -103,8 +127,6 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
   useEffect(() => {
     console.log(comments);
   }, [comments]);
-
-  const updateCommentHandler = () => {};
 
   const context: CommentContextType = {
     comments,

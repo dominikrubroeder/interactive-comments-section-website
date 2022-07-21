@@ -63,7 +63,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
       >
         <textarea
           placeholder="Add a comment..."
-          className="flex-1 resize-none border rounded-lg px-4 py-2 min-h-[6rem]"
+          className="flex-1 textarea"
           ref={commentRef}
         />
         <button className="shrink-0 bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase">
