@@ -31,18 +31,6 @@ const Comment: React.FC<IComment> = ({
     setShowDeleteModal(false);
   };
 
-  const deepIterator = (target: any) => {
-    console.log(target);
-    console.log(typeof target);
-    if (typeof target === 'object') {
-      for (const key in target) {
-        deepIterator(target[key]);
-      }
-    } else {
-      console.log(target);
-    }
-  };
-
   return (
     <>
       {showDeleteModal && (
@@ -60,13 +48,13 @@ const Comment: React.FC<IComment> = ({
             <footer className="flex items-center justify-end gap-2">
               <button
                 className="bg-app-neutral-blue-grayish text-white px-4 py-2 rounded-lg"
-                onClick={() => deleteHandler(id)}
+                onClick={() => setShowDeleteModal(false)}
               >
                 No, cancel
               </button>
               <button
                 className="bg-app-primary-red-soft text-white px-4 py-2 rounded-lg"
-                onClick={() => commentsCtx?.deleteComment(id)}
+                onClick={() => deleteHandler(id)}
               >
                 Yes, delete
               </button>
@@ -139,10 +127,7 @@ const Comment: React.FC<IComment> = ({
             )}
           </header>
 
-          <p
-            className="text-app-neutral-blue-grayish"
-            onClick={() => deepIterator(replies)}
-          >
+          <p className="text-app-neutral-blue-grayish">
             {replyingTo && (
               <span className="text-app-primary-blue-moderate font-bold">
                 @{replyingTo}&nbsp;

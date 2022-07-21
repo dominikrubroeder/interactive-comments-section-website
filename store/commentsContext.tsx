@@ -12,54 +12,84 @@ const CommentsContextProvider: React.FC<CommentsContextProviderProps> = ({
 }) => {
   const [comments, setComments] = useState<IComment[]>(commentList);
 
-  const deepIterator = (
-    target: IComment[],
-    commentId: number,
-    newComment: IComment
-  ): IComment | undefined => {
-    if (typeof target !== 'object') console.log('Not a valid object');
-
-    const commentToFind = target.find((comment) => comment.id === commentId);
-
-    if (!commentToFind) {
-      target.forEach((comment) =>
-        deepIterator(comment.replies, commentId, newComment)
-      );
-      return;
-    }
-
-    console.log('count');
-    commentToFind.replies.push(newComment);
-    setComments([...comments]);
-    return commentToFind;
-  };
-
   const addCommentHandler = (newComment: IComment, replyingToId: number) => {
-    const test = deepIterator(comments, replyingToId, newComment);
+    const deepIterator = (
+      target: IComment[],
+      commentId: number,
+      newComment: IComment
+    ) => {
+      if (typeof target !== 'object') console.log('Not a valid object');
+
+      const commentToFind = target.find((comment) => comment.id === commentId);
+
+      if (!commentToFind) {
+        target.forEach((comment) =>
+          deepIterator(comment.replies, commentId, newComment)
+        );
+        return;
+      }
+
+      commentToFind.replies.push(newComment);
+      setComments([...comments]);
+    };
+
+    deepIterator(comments, replyingToId, newComment);
   };
 
   const deleteCommentHandler = (commentId: number) => {
-    // setComments((previousState) =>
-    //   previousState.filter((comment) => comment.id !== commentId)
-    // );
+    const deepIterator = (target: IComment[], commentId: number) => {
+      if (typeof target !== 'object') console.log('Not a valid object');
+
+      const indexOfCommentToDelete = target.findIndex(
+        (comment) => comment.id === commentId
+      );
+
+      if (indexOfCommentToDelete === -1) {
+        target.forEach((comment) => deepIterator(comment.replies, commentId));
+        return;
+      }
+
+      target.splice(indexOfCommentToDelete, 1);
+      setComments([...comments]);
+    };
+
+    deepIterator(comments, commentId);
   };
 
   const increaseScore = (commentId: number) => {
-    comments.map((comment: IComment) => {
-      if (comment.id === commentId) {
-        comment.score += 1;
-        setComments([...comments]);
+    const deepIterator = (target: IComment[], commentId: number) => {
+      if (typeof target !== 'object') console.log('Not a valid object');
+
+      const commentToFind = target.find((comment) => comment.id === commentId);
+
+      if (!commentToFind) {
+        target.forEach((comment) => deepIterator(comment.replies, commentId));
+        return;
       }
-    });
+
+      commentToFind.score += 1;
+      setComments([...comments]);
+    };
+
+    deepIterator(comments, commentId);
   };
 
   const decreaseScore = (commentId: number) => {
-    comments.map((comment: IComment) => {
-      if (comment.id === commentId) {
-        comment.score -= 1;
-        setComments([...comments]);
+    const deepIterator = (target: IComment[], commentId: number) => {
+      if (typeof target !== 'object') console.log('Not a valid object');
+
+      const commentToFind = target.find((comment) => comment.id === commentId);
+
+      if (!commentToFind) {
+        target.forEach((comment) => deepIterator(comment.replies, commentId));
+        return;
       }
-    });
+
+      commentToFind.score -= 1;
+      setComments([...comments]);
+    };
+
+    deepIterator(comments, commentId);
   };
 
   useEffect(() => {
