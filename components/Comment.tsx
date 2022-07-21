@@ -6,7 +6,8 @@ import IconReply from './icons/IconReply';
 import { CommentsContext } from '../store/commentsContext';
 import IconEdit from './icons/IconEdit';
 import IconDelete from './icons/IconDelete';
-import Overlay from './Overlay';
+import Modal from './Modal';
+import { OverlayContext } from '../store/overlayContext';
 
 const Comment: React.FC<IComment> = ({
   id,
@@ -18,6 +19,7 @@ const Comment: React.FC<IComment> = ({
   replyingTo,
 }) => {
   const commentsCtx = useContext(CommentsContext);
+  const overlayCtx = useContext(OverlayContext);
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -32,9 +34,20 @@ const Comment: React.FC<IComment> = ({
       ? 'Some seconds ago...'
       : createdAt;
 
+  const initDeleteHandler = () => {
+    setShowDeleteModal((previousState) => !previousState);
+    overlayCtx?.show();
+  };
+
+  const cancelDeletionHandler = () => {
+    setShowDeleteModal(false);
+    overlayCtx?.hide();
+  };
+
   const deleteHandler = (commentId: number) => {
     commentsCtx?.deleteComment(commentId);
     setShowDeleteModal(false);
+    overlayCtx?.hide();
   };
 
   const updateHandler = () => {
@@ -49,6 +62,7 @@ const Comment: React.FC<IComment> = ({
     };
 
     commentsCtx?.updateComment(updatedComment);
+
     setIsEditMode(false);
   };
 
@@ -65,33 +79,15 @@ const Comment: React.FC<IComment> = ({
   return (
     <>
       {showDeleteModal && (
-        <div>
-          <Overlay onClick={() => setShowDeleteModal(false)} />
-
-          <div className="p-4 bg-white rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-xs max-h-min z-50">
-            <h2 className="mb-4 font-bold text-xl text-app-neutral-blue-dark">
-              Delete comment
-            </h2>
-            <p className="text-app-neutral-blue-grayish mb-4">
-              Are you sure you want to delete this comment? This will remove
-              comment and can`t be undone.
-            </p>
-            <footer className="flex items-center justify-end gap-2">
-              <button
-                className="bg-app-neutral-blue-grayish text-white px-4 py-2 rounded-lg"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                No, cancel
-              </button>
-              <button
-                className="bg-app-primary-red-soft text-white px-4 py-2 rounded-lg"
-                onClick={() => deleteHandler(id)}
-              >
-                Yes, delete
-              </button>
-            </footer>
-          </div>
-        </div>
+        <Modal
+          title="Delete comment"
+          content="Are you sure you want to delete this comment? This will remove
+              comment and can`t be undone."
+          primaryAction={() => deleteHandler(id)}
+          secondaryAction={cancelDeletionHandler}
+          primaryActionText="Yes, delete"
+          secondaryActionText="No, cancel"
+        />
       )}
 
       <div
@@ -125,7 +121,14 @@ const Comment: React.FC<IComment> = ({
                 alt={`${user.username} avatar`}
                 className="rounded-full"
               />
-              <h2>{user.username}</h2>
+              <h2 className="flex items-center gap-1">
+                {user.username}{' '}
+                {user.username === currentUser.username && (
+                  <span className="bg-app-primary-blue-moderate text-white px-1 py-[0.15rem] text-xs">
+                    you
+                  </span>
+                )}
+              </h2>
               <p>{computeCreatedAt}</p>
             </div>
 
@@ -144,9 +147,7 @@ const Comment: React.FC<IComment> = ({
               <div className="flex items-center gap-4 absolute bottom-6 right-4 sm:relative sm:top-auto sm:right-auto sm:bottom-auto">
                 <button
                   className="flex items-center gap-2 text-app-primary-red-soft"
-                  onClick={() =>
-                    setShowDeleteModal((previousState) => !previousState)
-                  }
+                  onClick={initDeleteHandler}
                 >
                   <IconDelete /> Delete
                 </button>
