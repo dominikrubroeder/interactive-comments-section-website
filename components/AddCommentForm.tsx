@@ -44,7 +44,10 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   useEffect(() => {
     if (commentRef.current && isReply) {
       commentRef.current.focus();
-      commentRef.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      commentRef.current.scrollIntoView({
+        block: 'center',
+        behavior: 'smooth',
+      });
     }
   }, [isReply]);
 
@@ -58,7 +61,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
         className="shrink-0"
       />
       <form
-        className="flex-1 flex items-start gap-2"
+        className="flex-1 grid gap-2 sm:flex sm:items-start"
         onSubmit={onSubmitHandler}
       >
         <textarea
@@ -66,7 +69,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
           className="flex-1 textarea"
           ref={commentRef}
         />
-        <button className="shrink-0 bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase">
+        <button className="shrink-0 justify-self-end bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase">
           Send
         </button>
       </form>

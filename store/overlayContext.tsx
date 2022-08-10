@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 type OverlayContextType = {
   shown: boolean;
@@ -24,12 +24,17 @@ const OverlayContextProvider: React.FC<OverlayContextProviderProps> = ({
 
   const hide = () => setShown(false);
 
+  useEffect(() => {
+    // document.body.classList.toggle('overflow-hidden');
+  }, [shown]);
+
   const context: OverlayContextType = {
     shown,
     show,
     hide,
     toggleShown,
   };
+
   return (
     <OverlayContext.Provider value={context}>
       {children}

@@ -22,6 +22,7 @@ const Comment: React.FC<IComment> = ({
   const overlayCtx = useContext(OverlayContext);
 
   const [showReplyForm, setShowReplyForm] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [initialContent, setInitialContent] = useState(content);
@@ -30,7 +31,7 @@ const Comment: React.FC<IComment> = ({
 
   const hasReplies = replies && replies.length > 0;
 
-  const computeCreatedAt =
+  const computedCreatedAt =
     new Date(createdAt) && new Date(createdAt).toString() !== 'Invalid Date'
       ? 'Some seconds ago...'
       : createdAt;
@@ -93,7 +94,7 @@ const Comment: React.FC<IComment> = ({
 
       <div
         className={`relative flex flex-col-reverse gap-4 p-4 rounded-lg bg-white sm:items-start sm:flex-row ${
-          hasReplies ? 'mb-4' : ''
+          hasReplies && showReplies ? 'mb-4' : ''
         }`}
       >
         <div className="flex items-center gap-0 text-center shrink-0 bg-app-neutral-gray-light rounded-lg px-2 self-start sm:flex-col">
@@ -134,8 +135,8 @@ const Comment: React.FC<IComment> = ({
                   </span>
                 )}
               </h2>
-              <p className="text-app-neutral-blue-grayish">
-                {computeCreatedAt}
+              <p className="text-app-neutral-blue-grayish text-xs">
+                {computedCreatedAt}
               </p>
             </div>
 
@@ -196,11 +197,24 @@ const Comment: React.FC<IComment> = ({
                 </button>
               </div>
             )}
+
+            {hasReplies && (
+              <footer className="text-right">
+                <button
+                  className="text-xs text-app-primary-blue-moderate"
+                  onClick={() =>
+                    setShowReplies((previousState) => !previousState)
+                  }
+                >
+                  {showReplies ? 'Hide' : 'Show'} replies ({replies.length})...
+                </button>
+              </footer>
+            )}
           </div>
         </div>
       </div>
 
-      {hasReplies && (
+      {hasReplies && showReplies && (
         <ul className="grid gap-4 pl-4 ml-4 border-l-2 sm:pl-8 sm:ml-8">
           {replies.map((reply) => (
             <li key={reply.id}>
