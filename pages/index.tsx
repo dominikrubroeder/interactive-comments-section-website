@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         />
       </main>
 
-      <footer className="text-center text-xs text-app-neutral-blue-grayish mt-8">
+      <footer className="text-center text-xs text-app-neutral-blue-grayish my-8">
         Frontend challenge by{' '}
         <a
           href="https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9"

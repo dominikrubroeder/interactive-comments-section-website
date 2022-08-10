@@ -18,7 +18,7 @@ const Modal: React.FC<IModal> = ({
   secondaryActionText,
 }) => {
   return (
-    <div className="p-4 bg-white rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-xs max-h-min z-50">
+    <div className="p-4 bg-white rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-xs max-h-min z-50 animate-appear">
       <h2 className="mb-4 font-bold text-xl text-app-neutral-blue-dark">
         {title}
       </h2>

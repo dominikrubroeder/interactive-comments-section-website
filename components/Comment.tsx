@@ -93,7 +93,7 @@ const Comment: React.FC<IComment> = ({
       )}
 
       <div
-        className={`relative flex flex-col-reverse gap-4 p-4 rounded-lg bg-white sm:items-start sm:flex-row ${
+        className={`relative flex flex-col-reverse gap-4 p-4 rounded-lg bg-white opacity-0 invisible animate-fadeUp sm:items-start sm:flex-row ${
           hasReplies && showReplies ? 'mb-4' : ''
         }`}
       >
@@ -181,7 +181,7 @@ const Comment: React.FC<IComment> = ({
             {!isEditMode && initialContent}
 
             {isEditMode && (
-              <div className="grid gap-2">
+              <div className="grid gap-2 animate-appear">
                 <textarea
                   className="textarea"
                   onChange={(e) => onChangeHandler(e)}

@@ -16,6 +16,47 @@ module.exports = {
         'app-neutral-gray-light': 'hsl(223, 19%, 93%)',
         'app-neutral-gray-light-very': 'hsl(228, 33%, 97%)',
       },
+      keyframes: {
+        fadeUp: {
+          '0%': {
+            transform: 'translateY(4%)',
+            opacity: '0.8',
+            visibility: 'hidden',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: '1',
+            visibility: 'visible',
+          },
+        },
+        fadeDown: {
+          '0%': {
+            transform: 'translateY(-4%)',
+            opacity: '0.8',
+            visibility: 'hidden',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: '1',
+            visibility: 'visible',
+          },
+        },
+        appear: {
+          '0%': {
+            opacity: '0.2',
+            visibility: 'hidden',
+          },
+          '100%': {
+            opacity: '1',
+            visibility: 'visible',
+          },
+        },
+      },
+      animation: {
+        fadeUp: 'fadeUp .6s ease-out forwards',
+        fadeDown: 'fadeDown .6s ease-out forwards',
+        appear: 'appear .6s ease-out forwards',
+      },
     },
   },
   plugins: [],
