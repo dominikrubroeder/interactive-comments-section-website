@@ -57,6 +57,11 @@ const Comment: React.FC<IComment> = ({
     setIsEditMode(false);
   };
 
+  const cancelEditHandler = () => {
+    setIsEditMode(false);
+    setInitialContent(content);
+  };
+
   const onChangeHandler = (e: any) => {
     setInitialContent(e.target.value);
   };
@@ -122,7 +127,7 @@ const Comment: React.FC<IComment> = ({
                 className="rounded-full"
               />
               <h2 className="flex items-center gap-1">
-                {user.username}{' '}
+                {user.username}
                 {user.username === currentUser.username && (
                   <span className="bg-app-primary-blue-moderate text-white px-1 py-[0.15rem] text-xs">
                     you
@@ -150,14 +155,22 @@ const Comment: React.FC<IComment> = ({
                   <IconDelete /> Delete
                 </Button>
 
-                <Button
-                  variant="text"
-                  onClick={() =>
-                    setIsEditMode((previousState) => !previousState)
-                  }
-                >
-                  <IconEdit /> {isEditMode ? 'Cancel' : 'Edit'}
-                </Button>
+                {!isEditMode && (
+                  <Button
+                    variant="text"
+                    onClick={() =>
+                      setIsEditMode((previousState) => !previousState)
+                    }
+                  >
+                    <IconEdit /> Edit
+                  </Button>
+                )}
+
+                {isEditMode && (
+                  <Button variant="text" onClick={cancelEditHandler}>
+                    <IconEdit /> Cancel
+                  </Button>
+                )}
               </div>
             )}
           </header>
