@@ -20,13 +20,11 @@ const Button: React.FC<ButtonProps> = ({
   if (variant === 'text') {
     return (
       <button
-        className={`flex items-center gap-2 absolute bottom-6 right-4 ${
+        className={`flex items-center gap-2 ${
           actionType === 'destructive'
             ? 'text-app-primary-red-soft'
             : 'text-app-primary-blue-moderate'
-        } hover:opacity-70 sm:relative sm:top-auto sm:right-auto sm:bottom-auto ${
-          className ? className : ''
-        }`}
+        } hover:opacity-70 ${className ? className : ''}`}
         onClick={onClick}
       >
         {children}

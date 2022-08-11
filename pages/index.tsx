@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 
       {overlayCtx?.shown && <Overlay onClick={overlayCtx!.toggleShown} />}
 
-      <main className="max-w-screen-md m-auto mt-8">
+      <main className="max-w-screen-md m-auto md:mt-8">
         <CommentList />
         <AddCommentForm
           isReply={false}

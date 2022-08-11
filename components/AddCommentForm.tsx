@@ -58,7 +58,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   }, [isReply]);
 
   return (
-    <div className="flex items-start gap-4 bg-white rounded-lg p-4 mt-4 opacity-0 invisible animate-appear">
+    <div className="flex items-start gap-4 bg-white rounded-lg p-4 m-4 mt-0 opacity-0 invisible animate-appear md:m-0 md:mt-4">
       <Image
         src={currentUser.image.png}
         width={32}

@@ -122,7 +122,7 @@ const Comment: React.FC<IComment> = ({
         </div>
 
         <div className="flex-1 grid gap-4">
-          <header className="flex items-center justify-between gap-2">
+          <header className="flex items-center gap-2 sm:justify-between">
             <div className="flex items-center gap-4">
               <Image
                 src={user.image.png}
@@ -144,40 +144,41 @@ const Comment: React.FC<IComment> = ({
               </p>
             </div>
 
-            {user.username !== currentUser.username && (
-              <Button variant="text" onClick={initRepling}>
-                <IconReply /> Reply
-              </Button>
-            )}
-
-            {user.username === currentUser.username && (
-              <div className="flex items-center gap-4 absolute bottom-6 right-4 sm:relative sm:top-auto sm:right-auto sm:bottom-auto">
-                <Button
-                  variant="text"
-                  actionType="destructive"
-                  onClick={overlayCtx?.show}
-                >
-                  <IconDelete /> Delete
+            <div className="flex items-center gap-4 absolute bottom-6 right-4 sm:relative sm:top-auto sm:right-auto sm:bottom-auto">
+              {user.username !== currentUser.username && (
+                <Button variant="text" onClick={initRepling}>
+                  <IconReply /> Reply
                 </Button>
+              )}
 
-                {!isEditMode && (
+              {user.username === currentUser.username && (
+                <React.Fragment>
+                  {' '}
                   <Button
                     variant="text"
-                    onClick={() =>
-                      setIsEditMode((previousState) => !previousState)
-                    }
+                    actionType="destructive"
+                    onClick={overlayCtx?.show}
                   >
-                    <IconEdit /> Edit
+                    <IconDelete /> Delete
                   </Button>
-                )}
-
-                {isEditMode && (
-                  <Button variant="text" onClick={cancelEditHandler}>
-                    <IconEdit /> Cancel
-                  </Button>
-                )}
-              </div>
-            )}
+                  {!isEditMode && (
+                    <Button
+                      variant="text"
+                      onClick={() =>
+                        setIsEditMode((previousState) => !previousState)
+                      }
+                    >
+                      <IconEdit /> Edit
+                    </Button>
+                  )}
+                  {isEditMode && (
+                    <Button variant="text" onClick={cancelEditHandler}>
+                      <IconEdit /> Cancel
+                    </Button>
+                  )}
+                </React.Fragment>
+              )}
+            </div>
           </header>
 
           <div className="text-app-neutral-blue-grayish">
@@ -202,21 +203,21 @@ const Comment: React.FC<IComment> = ({
                 </Button>
               </div>
             )}
-
-            {hasReplies && (
-              <footer className="text-right">
-                <Button
-                  variant="text"
-                  onClick={() =>
-                    setShowReplies((previousState) => !previousState)
-                  }
-                  className="text-xs ml-auto"
-                >
-                  {showReplies ? 'Hide' : 'Show'} replies ({replies.length})...
-                </Button>
-              </footer>
-            )}
           </div>
+
+          {hasReplies && (
+            <footer>
+              <Button
+                variant="text"
+                onClick={() =>
+                  setShowReplies((previousState) => !previousState)
+                }
+                className="text-xs ml-auto"
+              >
+                {showReplies ? 'Hide' : 'Show'} replies ({replies.length})...
+              </Button>
+            </footer>
+          )}
         </div>
       </div>
 
