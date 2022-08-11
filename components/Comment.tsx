@@ -8,6 +8,7 @@ import IconEdit from './icons/IconEdit';
 import IconDelete from './icons/IconDelete';
 import Modal from './Modal';
 import { OverlayContext } from '../store/overlayContext';
+import Button from './Button';
 
 const Comment: React.FC<IComment> = ({
   id,
@@ -99,7 +100,7 @@ const Comment: React.FC<IComment> = ({
       >
         <div className="flex items-center gap-0 text-center shrink-0 bg-app-neutral-gray-light rounded-lg px-2 self-start sm:flex-col">
           <button
-            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
+            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate hover:opacity-70"
             onClick={() =>
               commentsCtx?.updateScore(ScoreActionType.increase, id)
             }
@@ -108,7 +109,7 @@ const Comment: React.FC<IComment> = ({
           </button>
           <p className="text-app-primary-blue-moderate">{score}</p>
           <button
-            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate"
+            className="p-2 text-app-primary-blue-grayish-light hover:text-app-primary-blue-moderate hover:opacity-70"
             onClick={() =>
               commentsCtx?.updateScore(ScoreActionType.decrease, id)
             }
@@ -141,33 +142,34 @@ const Comment: React.FC<IComment> = ({
             </div>
 
             {user.username !== currentUser.username && (
-              <button
-                className="flex items-center gap-2 text-app-primary-blue-moderate absolute bottom-6 right-4 sm:relative sm:top-auto sm:right-auto sm:bottom-auto"
+              <Button
+                variant="text"
                 onClick={() =>
                   setShowReplyForm((previousState) => !previousState)
                 }
               >
                 <IconReply /> Reply
-              </button>
+              </Button>
             )}
 
             {user.username === currentUser.username && (
               <div className="flex items-center gap-4 absolute bottom-6 right-4 sm:relative sm:top-auto sm:right-auto sm:bottom-auto">
-                <button
-                  className="flex items-center gap-2 text-app-primary-red-soft"
+                <Button
+                  variant="text"
+                  actionType="destructive"
                   onClick={initDeleteHandler}
                 >
                   <IconDelete /> Delete
-                </button>
+                </Button>
 
-                <button
-                  className="flex items-center gap-2 text-app-primary-blue-moderate"
+                <Button
+                  variant="text"
                   onClick={() =>
                     setIsEditMode((previousState) => !previousState)
                   }
                 >
                   <IconEdit /> {isEditMode ? 'Cancel' : 'Edit'}
-                </button>
+                </Button>
               </div>
             )}
           </header>
@@ -189,25 +191,23 @@ const Comment: React.FC<IComment> = ({
                   defaultValue={initialContent}
                 />
 
-                <button
-                  className="bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase justify-self-end"
-                  onClick={updateHandler}
-                >
+                <Button onClick={updateHandler} className="justify-self-end">
                   Update
-                </button>
+                </Button>
               </div>
             )}
 
             {hasReplies && (
               <footer className="text-right">
-                <button
-                  className="text-xs text-app-primary-blue-moderate"
+                <Button
+                  variant="text"
                   onClick={() =>
                     setShowReplies((previousState) => !previousState)
                   }
+                  className="text-xs ml-auto"
                 >
                   {showReplies ? 'Hide' : 'Show'} replies ({replies.length})...
-                </button>
+                </Button>
               </footer>
             )}
           </div>

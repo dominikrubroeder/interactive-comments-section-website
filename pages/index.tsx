@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useContext } from 'react';
 import AddCommentForm from '../components/AddCommentForm';
 import CommentList from '../components/CommentList';
@@ -21,7 +20,7 @@ const Home: NextPage = () => {
 
       {overlayCtx?.shown && <Overlay onClick={overlayCtx!.toggleShown} />}
 
-      <main className="max-w-screen-md m-auto">
+      <main className="max-w-screen-md m-auto mt-8">
         <CommentList />
         <AddCommentForm
           isReply={false}
@@ -33,7 +32,7 @@ const Home: NextPage = () => {
       </main>
 
       <footer className="text-center text-xs text-app-neutral-blue-grayish my-8">
-        Frontend challenge by{' '}
+        Frontend challenge by&nbsp;
         <a
           href="https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9"
           target="_blank"

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useRef, useContext, useEffect } from 'react';
 import { IComment, IUser } from '../data/data';
 import { CommentsContext } from '../store/commentsContext';
+import Button from './Button';
 
 interface AddCommentFormProps {
   isReply: boolean;
@@ -69,9 +70,8 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
           className="flex-1 textarea"
           ref={commentRef}
         />
-        <button className="shrink-0 justify-self-end bg-app-primary-blue-moderate text-white py-3 px-6 rounded-xl uppercase">
-          Send
-        </button>
+
+        <Button>Send</Button>
       </form>
     </div>
   );
