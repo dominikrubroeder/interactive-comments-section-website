@@ -40,7 +40,14 @@ const Home: NextPage = () => {
         >
           frontendmentor.io
         </a>
-        , done by Dominik Rubröder
+        , done by&nbsp;
+        <a
+          href="https://github.com/dominikrubroeder"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Dominik Rubröder
+        </a>
       </footer>
     </div>
   );

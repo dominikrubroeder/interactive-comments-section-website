@@ -24,7 +24,6 @@ const Comment: React.FC<IComment> = ({
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [initialContent, setInitialContent] = useState(content);
 
@@ -37,19 +36,8 @@ const Comment: React.FC<IComment> = ({
       ? 'Some seconds ago...'
       : createdAt;
 
-  const initDeleteHandler = () => {
-    setShowDeleteModal((previousState) => !previousState);
-    overlayCtx?.show();
-  };
-
-  const cancelDeletionHandler = () => {
-    setShowDeleteModal(false);
-    overlayCtx?.hide();
-  };
-
   const deleteHandler = (commentId: number) => {
     commentsCtx?.deleteComment(commentId);
-    setShowDeleteModal(false);
     overlayCtx?.hide();
   };
 
@@ -73,6 +61,11 @@ const Comment: React.FC<IComment> = ({
     setInitialContent(e.target.value);
   };
 
+  const initRepling = () => {
+    setShowReplies(true);
+    setShowReplyForm((previousState) => !previousState);
+  };
+
   useEffect(() => {
     if (contentTextAreaRef && isEditMode) {
       contentTextAreaRef.current!.focus();
@@ -81,13 +74,13 @@ const Comment: React.FC<IComment> = ({
 
   return (
     <>
-      {showDeleteModal && (
+      {overlayCtx?.shown && (
         <Modal
           title="Delete comment"
           content="Are you sure you want to delete this comment? This will remove
               comment and can`t be undone."
           primaryAction={() => deleteHandler(id)}
-          secondaryAction={cancelDeletionHandler}
+          secondaryAction={overlayCtx?.hide}
           primaryActionText="Yes, delete"
           secondaryActionText="No, cancel"
         />
@@ -142,12 +135,7 @@ const Comment: React.FC<IComment> = ({
             </div>
 
             {user.username !== currentUser.username && (
-              <Button
-                variant="text"
-                onClick={() =>
-                  setShowReplyForm((previousState) => !previousState)
-                }
-              >
+              <Button variant="text" onClick={initRepling}>
                 <IconReply /> Reply
               </Button>
             )}
@@ -157,7 +145,7 @@ const Comment: React.FC<IComment> = ({
                 <Button
                   variant="text"
                   actionType="destructive"
-                  onClick={initDeleteHandler}
+                  onClick={overlayCtx?.show}
                 >
                   <IconDelete /> Delete
                 </Button>
