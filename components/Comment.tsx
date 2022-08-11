@@ -42,6 +42,11 @@ const Comment: React.FC<IComment> = ({
   };
 
   const updateHandler = () => {
+    if (!contentTextAreaRef.current?.value.trim()) {
+      contentTextAreaRef.current?.focus();
+      return;
+    }
+
     const updatedComment: IComment = {
       id,
       content: contentTextAreaRef.current!.value,
