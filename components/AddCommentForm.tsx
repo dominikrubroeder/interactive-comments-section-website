@@ -25,6 +25,11 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!commentRef.current?.value.trim()) {
+      commentRef.current?.focus();
+      return;
+    }
+
     const newComment: IComment = {
       id: Math.random(),
       content: commentRef.current!.value,
